@@ -1,0 +1,613 @@
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #166088;
+    --accent-color: #4fc3a1;
+    --danger-color: #e74c3c;
+    --warning-color: #f39c12;
+    --success-color: #2ecc71;
+    --dark-color: #2c3e50;
+    --light-color: #ecf0f1;
+    --gray-color: #95a5a6;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Загрузочный экран */
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--dark-color);
+    color: var(--white);
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--gray-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Экран авторизации */
+.auth-container {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow);
+    margin: 50px auto;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo i {
+    font-size: 48px;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--light-color);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-color);
+    transition: var(--transition);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    color: var(--gray-color);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 2px solid var(--light-color);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.show-password {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--gray-color);
+    cursor: pointer;
+}
+
+.btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.btn-google {
+    background: #db4437;
+    color: var(--white);
+}
+
+.btn-github {
+    background: #333;
+    color: var(--white);
+}
+
+.btn-small {
+    padding: 10px 15px;
+    font-size: 14px;
+}
+
+/* Основное приложение */
+.screen {
+    height: 100vh;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+.app-header {
+    background: var(--white);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+}
+
+.current-user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.current-user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.status {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.status.online {
+    background: var(--success-color);
+    color: var(--white);
+}
+
+.status.offline {
+    background: var(--gray-color);
+    color: var(--white);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--dark-color);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.icon-btn:hover {
+    background: var(--light-color);
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--danger-color);
+    color: var(--white);
+    font-size: 12px;
+    padding: 3px 7px;
+    border-radius: 50%;
+}
+
+.app-content {
+    display: flex;
+    height: calc(100vh - 70px);
+}
+
+/* Боковая панель */
+.sidebar {
+    width: 300px;
+    background: var(--white);
+    border-right: 1px solid var(--light-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.search-container {
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid var(--light-color);
+}
+
+.search-container .input-group {
+    flex: 1;
+}
+
+.sidebar-tabs {
+    display: flex;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--light-color);
+}
+
+.sidebar-tabs .tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+}
+
+.lists-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.list {
+    display: none;
+}
+
+.list.active {
+    display: block;
+}
+
+.list h4 {
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.count {
+    background: var(--light-color);
+    color: var(--dark-color);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.list-item:hover {
+    background: var(--light-color);
+}
+
+.list-item.active {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.list-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Область чата */
+.chat-area {
+    flex: 1;
+    background: var(--light-color);
+}
+
+.no-chat-selected {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--gray-color);
+}
+
+.no-chat-selected i {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.active-chat {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: var(--white);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--light-color);
+}
+
+.chat-partner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.chat-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.messages-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    max-width: 70%;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    position: relative;
+}
+
+.message.incoming {
+    align-self: flex-start;
+    background: var(--white);
+    border-bottom-left-radius: 5px;
+}
+
+.message.outgoing {
+    align-self: flex-end;
+    background: var(--primary-color);
+    color: var(--white);
+    border-bottom-right-radius: 5px;
+}
+
+.message-time {
+    font-size: 12px;
+    opacity: 0.8;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.message-input-container {
+    background: var(--white);
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    border-top: 1px solid var(--light-color);
+}
+
+.message-input-container .input-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.message-input-container textarea {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid var(--light-color);
+    border-radius: var(--border-radius);
+    resize: none;
+    font-family: inherit;
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.message-input-container textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.input-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Модальные окна */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 20px;
+    background: var(--primary-color);
+    color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid var(--light-color);
+    text-align: right;
+}
+
+/* Уведомления */
+.notifications-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 350px;
+    background: var(--white);
+    box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+    z-index: 1500;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.notifications-panel:not(.hidden) {
+    transform: translateX(0);
+}
+
+.notifications-header {
+    padding: 20px;
+    background: var(--primary-color);
+    color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notifications-list {
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100% - 70px);
+}
+
+.notification-item {
+    padding: 15px;
+    border-bottom: 1px solid var(--light-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.notification-item:hover {
+    background: var(--light-color);
+}
+
+.notification-item.unread {
+    background: rgba(74, 111, 165, 0.1);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .app-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 50vh;
+    }
+
+    .chat-area {
+        height: calc(50vh - 70px);
+    }
+
+    .auth-container {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .notifications-panel {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-tabs {
+        flex-direction: column;
+    }
+
+    .btn {
+        padding: 12px 20px;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+}
