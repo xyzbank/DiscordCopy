@@ -3,830 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Простой чат для GitHub Pages</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            min-height: 95vh;
-        }
-        
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-        
-        .description {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .app-container {
-            display: flex;
-            flex: 1;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .left-panel {
-            flex: 1;
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .right-panel {
-            flex: 2;
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-section {
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-        }
-        
-        h3 {
-            color: #34495e;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-        
-        input, textarea, button {
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            width: 100%;
-        }
-        
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: #2980b9;
-        }
-        
-        .logout-btn {
-            background-color: #e74c3c;
-        }
-        
-        .logout-btn:hover {
-            background-color: #c0392b;
-        }
-        
-        .friend-btn {
-            background-color: #2ecc71;
-            width: auto;
-            padding: 8px 15px;
-            font-size: 0.9rem;
-            margin-left: 10px;
-        }
-        
-        .friend-btn:hover {
-            background-color: #27ae60;
-        }
-        
-        .remove-btn {
-            background-color: #e74c3c;
-            width: auto;
-            padding: 8px 15px;
-            font-size: 0.9rem;
-            margin-left: 10px;
-        }
-        
-        .remove-btn:hover {
-            background-color: #c0392b;
-        }
-        
-        #chatContainer {
-            flex: 1;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #fafafa;
-            min-height: 300px;
-        }
-        
-        .message {
-            margin-bottom: 12px;
-            padding: 10px;
-            border-radius: 6px;
-            max-width: 80%;
-        }
-        
-        .my-message {
-            background-color: #d4edda;
-            margin-left: auto;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .friend-message {
-            background-color: #d1ecf1;
-            margin-right: auto;
-            border: 1px solid #bee5eb;
-        }
-        
-        .message-sender {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #2c3e50;
-        }
-        
-        .message-time {
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            text-align: right;
-            margin-top: 5px;
-        }
-        
-        .friends-list {
-            list-style-type: none;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .friends-list li {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .friends-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .friend-online {
-            color: #2ecc71;
-            font-weight: bold;
-        }
-        
-        .friend-offline {
-            color: #95a5a6;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        
-        .online {
-            background-color: #2ecc71;
-        }
-        
-        .offline {
-            background-color: #e74c3c;
-        }
-        
-        .current-user {
-            background-color: #ecf0f1;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 15px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            border-top: 1px solid #ddd;
-            margin-top: 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-            }
-            
-            .message {
-                max-width: 95%;
-            }
-        }
-    </style>
+    <title>Real Chat App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Простой чат для GitHub Pages</h1>
-            <p class="description">Общайтесь и добавляйте друзей без лишних визуальных эффектов</p>
-        </header>
-        
-        <div class="app-container">
-            <!-- Левая панель: регистрация и друзья -->
-            <div class="left-panel">
-                <!-- Форма регистрации/входа -->
-                <div class="form-section" id="authSection">
-                    <h2>Регистрация / Вход</h2>
-                    <div id="loginForm">
-                        <input type="text" id="username" placeholder="Имя пользователя" required>
-                        <input type="password" id="password" placeholder="Пароль" required>
-                        <button id="loginBtn">Войти</button>
-                        <button id="registerBtn">Зарегистрироваться</button>
-                    </div>
-                    <div id="userInfo" class="hidden">
-                        <div class="current-user">
-                            <h3>Текущий пользователь: <span id="currentUsername"></span></h3>
-                            <button id="logoutBtn" class="logout-btn">Выйти</button>
-                        </div>
-                    </div>
+    <div class="app-container">
+        <!-- Загрузочный экран -->
+        <div id="loadingScreen" class="loading-screen">
+            <div class="spinner"></div>
+            <p>Загрузка приложения...</p>
+        </div>
+
+        <!-- Авторизация -->
+        <div id="authScreen" class="screen hidden">
+            <div class="auth-container">
+                <div class="logo">
+                    <i class="fas fa-comments"></i>
+                    <h1>Real Chat</h1>
                 </div>
                 
-                <!-- Список друзей -->
-                <div class="form-section">
-                    <h2>Друзья</h2>
-                    <div id="friendsSection" class="hidden">
-                        <div class="form-section">
-                            <h3>Добавить друга</h3>
-                            <input type="text" id="friendUsername" placeholder="Имя пользователя">
-                            <button id="addFriendBtn" class="friend-btn">Добавить в друзья</button>
-                        </div>
-                        
-                        <h3>Список друзей</h3>
-                        <ul id="friendsList" class="friends-list">
-                            <!-- Список друзей будет загружаться здесь -->
-                        </ul>
-                    </div>
-                    <p id="noFriendsMessage" class="hidden">У вас пока нет друзей. Добавьте друзей, чтобы общаться с ними.</p>
-                </div>
-            </div>
-            
-            <!-- Правая панель: чат -->
-            <div class="right-panel">
-                <div id="chatSection" class="hidden">
-                    <h2>Чат</h2>
-                    <div class="form-section">
-                        <h3>Выберите друга для общения</h3>
-                        <select id="chatFriendSelect">
-                            <option value="">-- Выберите друга --</option>
-                        </select>
-                    </div>
-                    
-                    <div id="chatContainer">
-                        <p id="noChatSelected">Выберите друга из списка, чтобы начать общение</p>
-                        <!-- Сообщения будут загружаться здесь -->
-                    </div>
-                    
-                    <div class="form-section">
-                        <h3>Отправить сообщение</h3>
-                        <textarea id="messageInput" placeholder="Введите ваше сообщение..." rows="3"></textarea>
-                        <button id="sendMessageBtn">Отправить</button>
-                    </div>
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Вход</button>
+                    <button class="tab-btn" data-tab="register">Регистрация</button>
                 </div>
                 
-                <div id="chatLoginPrompt">
-                    <h2>Для начала общения войдите в систему</h2>
-                    <p>Пожалуйста, войдите или зарегистрируйтесь, чтобы использовать чат и добавлять друзей.</p>
+                <form id="loginForm" class="auth-form">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Пароль" required>
+                        <button type="button" class="show-password" data-target="loginPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <div class="auth-divider">
+                        <span>или</span>
+                    </div>
+                    <button type="button" id="googleLogin" class="btn btn-google">
+                        <i class="fab fa-google"></i> Войти через Google
+                    </button>
+                    <button type="button" id="githubLogin" class="btn btn-github">
+                        <i class="fab fa-github"></i> Войти через GitHub
+                    </button>
+                </form>
+                
+                <form id="registerForm" class="auth-form hidden">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="registerName" placeholder="Имя пользователя" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="registerEmail" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="registerPassword" placeholder="Пароль" required minlength="6">
+                        <button type="button" class="show-password" data-target="registerPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="registerConfirmPassword" placeholder="Подтвердите пароль" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Нажимая "Зарегистрироваться", вы соглашаетесь с <a href="#">Условиями использования</a></p>
                 </div>
             </div>
         </div>
-        
-        <footer>
-            <p>Простой чат для GitHub Pages | Работает полностью на клиентской стороне | Данные хранятся в LocalStorage</p>
-        </footer>
+
+        <!-- Основное приложение -->
+        <div id="mainScreen" class="screen hidden">
+            <!-- Верхняя панель -->
+            <header class="app-header">
+                <div class="header-left">
+                    <button id="menuToggle" class="icon-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="current-user-info">
+                        <img id="userAvatar" src="" alt="Аватар">
+                        <div>
+                            <h3 id="userName"></h3>
+                            <small id="userStatus" class="status online">Online</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button id="notificationsBtn" class="icon-btn">
+                        <i class="fas fa-bell"></i>
+                        <span id="notificationCount" class="badge hidden">0</span>
+                    </button>
+                    <button id="settingsBtn" class="icon-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Основной контент -->
+            <div class="app-content">
+                <!-- Боковая панель -->
+                <aside id="sidebar" class="sidebar">
+                    <!-- Поиск и добавление друзей -->
+                    <div class="search-container">
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="friendSearch" placeholder="Поиск друзей...">
+                        </div>
+                        <button id="addFriendBtn" class="btn btn-small">
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+                    </div>
+
+                    <!-- Вкладки -->
+                    <div class="sidebar-tabs">
+                        <button class="tab-btn active" data-tab="friends">
+                            <i class="fas fa-users"></i> Друзья
+                        </button>
+                        <button class="tab-btn" data-tab="chats">
+                            <i class="fas fa-comments"></i> Чаты
+                        </button>
+                        <button class="tab-btn" data-tab="groups">
+                            <i class="fas fa-user-group"></i> Группы
+                        </button>
+                    </div>
+
+                    <!-- Списки -->
+                    <div class="lists-container">
+                        <!-- Список друзей -->
+                        <div id="friendsList" class="list active">
+                            <h4>Друзья <span id="friendsCount" class="count">0</span></h4>
+                            <div class="list-items">
+                                <!-- Друзья будут загружаться здесь -->
+                            </div>
+                        </div>
+
+                        <!-- Список чатов -->
+                        <div id="chatsList" class="list">
+                            <h4>Недавние чаты</h4>
+                            <div class="list-items">
+                                <!-- Чаты будут загружаться здесь -->
+                            </div>
+                        </div>
+
+                        <!-- Список групп -->
+                        <div id="groupsList" class="list">
+                            <h4>Группы</h4>
+                            <div class="list-items">
+                                <!-- Группы будут загружаться здесь -->
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Область чата -->
+                <main class="chat-area">
+                    <!-- Заглушка при выборе чата -->
+                    <div id="noChatSelected" class="no-chat-selected">
+                        <i class="fas fa-comments"></i>
+                        <h3>Выберите чат для общения</h3>
+                        <p>Начните новый разговор или выберите существующий</p>
+                    </div>
+
+                    <!-- Активный чат -->
+                    <div id="activeChat" class="active-chat hidden">
+                        <!-- Заголовок чата -->
+                        <div class="chat-header">
+                            <div class="chat-partner">
+                                <img id="chatAvatar" src="" alt="Аватар">
+                                <div>
+                                    <h4 id="chatPartnerName"></h4>
+                                    <small id="chatPartnerStatus" class="status"></small>
+                                </div>
+                            </div>
+                            <div class="chat-actions">
+                                <button class="icon-btn">
+                                    <i class="fas fa-phone"></i>
+                                </button>
+                                <button class="icon-btn">
+                                    <i class="fas fa-video"></i>
+                                </button>
+                                <button class="icon-btn">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Сообщения -->
+                        <div id="messagesContainer" class="messages-container">
+                            <!-- Сообщения будут загружаться здесь -->
+                        </div>
+
+                        <!-- Ввод сообщения -->
+                        <div class="message-input-container">
+                            <div class="input-actions">
+                                <button class="icon-btn">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="icon-btn">
+                                    <i class="fas fa-image"></i>
+                                </button>
+                                <button class="icon-btn">
+                                    <i class="fas fa-file"></i>
+                                </button>
+                            </div>
+                            <div class="input-group">
+                                <textarea id="messageInput" placeholder="Введите сообщение..." rows="1"></textarea>
+                                <button id="sendMessageBtn" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="input-actions">
+                                <button class="icon-btn">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Модальные окна -->
+        <div id="addFriendModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Добавить друга</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="email" id="addFriendEmail" placeholder="Email друга">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="sendFriendRequest" class="btn btn-primary">Отправить запрос</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Уведомления -->
+    <div id="notificationsPanel" class="notifications-panel hidden">
+        <div class="notifications-header">
+            <h3>Уведомления</h3>
+            <button class="close-notifications">&times;</button>
+        </div>
+        <div class="notifications-list">
+            <!-- Уведомления будут здесь -->
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+    
+    <!-- Регистрация Service Worker для PWA -->
     <script>
-        // Основные переменные
-        let currentUser = null;
-        let users = JSON.parse(localStorage.getItem('chatUsers')) || [];
-        let friends = JSON.parse(localStorage.getItem('chatFriends')) || {};
-        let messages = JSON.parse(localStorage.getItem('chatMessages')) || {};
-        let selectedFriend = null;
-
-        // Элементы DOM
-        const loginForm = document.getElementById('loginForm');
-        const userInfo = document.getElementById('userInfo');
-        const currentUsernameSpan = document.getElementById('currentUsername');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const registerBtn = document.getElementById('registerBtn');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        
-        const friendsSection = document.getElementById('friendsSection');
-        const noFriendsMessage = document.getElementById('noFriendsMessage');
-        const friendUsernameInput = document.getElementById('friendUsername');
-        const addFriendBtn = document.getElementById('addFriendBtn');
-        const friendsList = document.getElementById('friendsList');
-        
-        const chatSection = document.getElementById('chatSection');
-        const chatLoginPrompt = document.getElementById('chatLoginPrompt');
-        const chatFriendSelect = document.getElementById('chatFriendSelect');
-        const chatContainer = document.getElementById('chatContainer');
-        const messageInput = document.getElementById('messageInput');
-        const sendMessageBtn = document.getElementById('sendMessageBtn');
-        const noChatSelected = document.getElementById('noChatSelected');
-
-        // Проверяем, есть ли уже авторизованный пользователь
-        function checkAuth() {
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                showUserInfo();
-                loadFriends();
-                updateChatFriendSelect();
-                showChatSection();
-            }
-        }
-
-        // Показываем информацию о пользователе
-        function showUserInfo() {
-            loginForm.classList.add('hidden');
-            userInfo.classList.remove('hidden');
-            currentUsernameSpan.textContent = currentUser.username;
-            
-            friendsSection.classList.remove('hidden');
-            noFriendsMessage.classList.add('hidden');
-        }
-
-        // Показываем секцию чата
-        function showChatSection() {
-            chatSection.classList.remove('hidden');
-            chatLoginPrompt.classList.add('hidden');
-        }
-
-        // Скрываем секцию чата
-        function hideChatSection() {
-            chatSection.classList.add('hidden');
-            chatLoginPrompt.classList.remove('hidden');
-        }
-
-        // Регистрация нового пользователя
-        registerBtn.addEventListener('click', function() {
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-            
-            if (!username || !password) {
-                alert('Пожалуйста, введите имя пользователя и пароль');
-                return;
-            }
-            
-            // Проверяем, существует ли уже пользователь с таким именем
-            if (users.find(u => u.username === username)) {
-                alert('Пользователь с таким именем уже существует');
-                return;
-            }
-            
-            // Создаем нового пользователя
-            const newUser = {
-                id: Date.now().toString(),
-                username: username,
-                password: password,
-                registered: new Date().toISOString()
-            };
-            
-            users.push(newUser);
-            localStorage.setItem('chatUsers', JSON.stringify(users));
-            
-            // Автоматически входим под новым пользователем
-            currentUser = newUser;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            // Инициализируем списки для нового пользователя
-            if (!friends[currentUser.id]) {
-                friends[currentUser.id] = [];
-                localStorage.setItem('chatFriends', JSON.stringify(friends));
-            }
-            
-            if (!messages[currentUser.id]) {
-                messages[currentUser.id] = {};
-                localStorage.setItem('chatMessages', JSON.stringify(messages));
-            }
-            
-            showUserInfo();
-            loadFriends();
-            updateChatFriendSelect();
-            showChatSection();
-            
-            alert('Регистрация прошла успешно! Добро пожаловать, ' + username);
-        });
-
-        // Вход пользователя
-        loginBtn.addEventListener('click', function() {
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-            
-            if (!username || !password) {
-                alert('Пожалуйста, введите имя пользователя и пароль');
-                return;
-            }
-            
-            // Ищем пользователя
-            const user = users.find(u => u.username === username && u.password === password);
-            
-            if (!user) {
-                alert('Неверное имя пользователя или пароль');
-                return;
-            }
-            
-            // Успешный вход
-            currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            // Инициализируем списки, если их нет
-            if (!friends[currentUser.id]) {
-                friends[currentUser.id] = [];
-                localStorage.setItem('chatFriends', JSON.stringify(friends));
-            }
-            
-            if (!messages[currentUser.id]) {
-                messages[currentUser.id] = {};
-                localStorage.setItem('chatMessages', JSON.stringify(messages));
-            }
-            
-            showUserInfo();
-            loadFriends();
-            updateChatFriendSelect();
-            showChatSection();
-            
-            // Очищаем поля ввода
-            usernameInput.value = '';
-            passwordInput.value = '';
-        });
-
-        // Выход пользователя
-        logoutBtn.addEventListener('click', function() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            
-            userInfo.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-            friendsSection.classList.add('hidden');
-            hideChatSection();
-            
-            // Очищаем поля ввода
-            usernameInput.value = '';
-            passwordInput.value = '';
-        });
-
-        // Загрузка списка друзей
-        function loadFriends() {
-            if (!currentUser) return;
-            
-            const userFriends = friends[currentUser.id] || [];
-            friendsList.innerHTML = '';
-            
-            if (userFriends.length === 0) {
-                noFriendsMessage.classList.remove('hidden');
-                return;
-            }
-            
-            noFriendsMessage.classList.add('hidden');
-            
-            userFriends.forEach(friendId => {
-                const friend = users.find(u => u.id === friendId);
-                if (!friend) return;
-                
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <div>
-                        <span class="status-indicator online"></span>
-                        <strong>${friend.username}</strong>
-                    </div>
-                    <button class="remove-btn" data-id="${friend.id}">Удалить</button>
-                `;
-                
-                friendsList.appendChild(li);
-            });
-            
-            // Добавляем обработчики для кнопок удаления
-            document.querySelectorAll('.remove-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const friendId = this.getAttribute('data-id');
-                    removeFriend(friendId);
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker зарегистрирован');
+                })
+                .catch(error => {
+                    console.log('Ошибка регистрации Service Worker:', error);
                 });
-            });
         }
-
-        // Добавление друга
-        addFriendBtn.addEventListener('click', function() {
-            const friendUsername = friendUsernameInput.value.trim();
-            
-            if (!friendUsername) {
-                alert('Пожалуйста, введите имя пользователя');
-                return;
-            }
-            
-            if (friendUsername === currentUser.username) {
-                alert('Вы не можете добавить себя в друзья');
-                return;
-            }
-            
-            // Ищем пользователя
-            const friend = users.find(u => u.username === friendUsername);
-            
-            if (!friend) {
-                alert('Пользователь с таким именем не найден');
-                return;
-            }
-            
-            // Проверяем, не добавлен ли уже этот пользователь в друзья
-            const userFriends = friends[currentUser.id] || [];
-            if (userFriends.includes(friend.id)) {
-                alert('Этот пользователь уже у вас в друзьях');
-                return;
-            }
-            
-            // Добавляем друга
-            userFriends.push(friend.id);
-            friends[currentUser.id] = userFriends;
-            localStorage.setItem('chatFriends', JSON.stringify(friends));
-            
-            // Очищаем поле ввода
-            friendUsernameInput.value = '';
-            
-            // Обновляем список друзей
-            loadFriends();
-            updateChatFriendSelect();
-            
-            alert(`Пользователь ${friendUsername} добавлен в друзья`);
-        });
-
-        // Удаление друга
-        function removeFriend(friendId) {
-            if (!currentUser) return;
-            
-            const userFriends = friends[currentUser.id] || [];
-            const updatedFriends = userFriends.filter(id => id !== friendId);
-            friends[currentUser.id] = updatedFriends;
-            localStorage.setItem('chatFriends', JSON.stringify(friends));
-            
-            // Если удаленный друг был выбран в чате, сбрасываем выбор
-            if (selectedFriend === friendId) {
-                selectedFriend = null;
-                chatFriendSelect.value = '';
-                showNoChatSelected();
-            }
-            
-            // Обновляем список друзей и выпадающий список
-            loadFriends();
-            updateChatFriendSelect();
-        }
-
-        // Обновление выпадающего списка друзей для чата
-        function updateChatFriendSelect() {
-            if (!currentUser) return;
-            
-            const userFriends = friends[currentUser.id] || [];
-            chatFriendSelect.innerHTML = '<option value="">-- Выберите друга --</option>';
-            
-            userFriends.forEach(friendId => {
-                const friend = users.find(u => u.id === friendId);
-                if (!friend) return;
-                
-                const option = document.createElement('option');
-                option.value = friend.id;
-                option.textContent = friend.username;
-                chatFriendSelect.appendChild(option);
-            });
-        }
-
-        // Выбор друга для чата
-        chatFriendSelect.addEventListener('change', function() {
-            selectedFriend = this.value;
-            
-            if (!selectedFriend) {
-                showNoChatSelected();
-                return;
-            }
-            
-            // Загружаем историю сообщений с выбранным другом
-            loadChatHistory();
-        });
-
-        // Показываем сообщение о том, что друг не выбран
-        function showNoChatSelected() {
-            chatContainer.innerHTML = '<p id="noChatSelected">Выберите друга из списка, чтобы начать общение</p>';
-            messageInput.disabled = true;
-            sendMessageBtn.disabled = true;
-        }
-
-        // Загрузка истории сообщений
-        function loadChatHistory() {
-            if (!currentUser || !selectedFriend) return;
-            
-            // Получаем историю сообщений
-            const chatKey = getChatKey(currentUser.id, selectedFriend);
-            const chatHistory = messages[chatKey] || [];
-            
-            // Отображаем сообщения
-            chatContainer.innerHTML = '';
-            
-            if (chatHistory.length === 0) {
-                const noMessages = document.createElement('p');
-                noMessages.textContent = 'Начните общение с этим другом';
-                chatContainer.appendChild(noMessages);
-            } else {
-                chatHistory.forEach(msg => {
-                    const messageDiv = createMessageElement(msg);
-                    chatContainer.appendChild(messageDiv);
-                });
-            }
-            
-            // Прокручиваем вниз к последним сообщениям
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            
-            // Активируем поле ввода и кнопку отправки
-            messageInput.disabled = false;
-            sendMessageBtn.disabled = false;
-        }
-
-        // Создание элемента сообщения
-        function createMessageElement(msg) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            
-            // Определяем, отправили ли мы это сообщение или получили
-            if (msg.senderId === currentUser.id) {
-                messageDiv.classList.add('my-message');
-            } else {
-                messageDiv.classList.add('friend-message');
-            }
-            
-            // Находим имя отправителя
-            const sender = users.find(u => u.id === msg.senderId);
-            const senderName = sender ? sender.username : 'Неизвестный';
-            
-            // Форматируем время
-            const time = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
-            messageDiv.innerHTML = `
-                <div class="message-sender">${senderName}</div>
-                <div class="message-text">${msg.text}</div>
-                <div class="message-time">${time}</div>
-            `;
-            
-            return messageDiv;
-        }
-
-        // Отправка сообщения
-        sendMessageBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
-        function sendMessage() {
-            if (!currentUser || !selectedFriend) return;
-            
-            const messageText = messageInput.value.trim();
-            
-            if (!messageText) {
-                alert('Пожалуйста, введите сообщение');
-                return;
-            }
-            
-            // Создаем объект сообщения
-            const message = {
-                id: Date.now().toString(),
-                senderId: currentUser.id,
-                receiverId: selectedFriend,
-                text: messageText,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Сохраняем сообщение
-            const chatKey = getChatKey(currentUser.id, selectedFriend);
-            
-            if (!messages[chatKey]) {
-                messages[chatKey] = [];
-            }
-            
-            messages[chatKey].push(message);
-            localStorage.setItem('chatMessages', JSON.stringify(messages));
-            
-            // Добавляем сообщение в чат
-            const messageDiv = createMessageElement(message);
-            chatContainer.appendChild(messageDiv);
-            
-            // Очищаем поле ввода
-            messageInput.value = '';
-            
-            // Прокручиваем вниз
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Генерация ключа для хранения сообщений между двумя пользователями
-        function getChatKey(userId1, userId2) {
-            // Сортируем ID, чтобы ключ был одинаковым для обоих пользователей
-            const sortedIds = [userId1, userId2].sort();
-            return `${sortedIds[0]}_${sortedIds[1]}`;
-        }
-
-        // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuth();
-            
-            // Загружаем тестовых пользователей, если их нет
-            if (users.length === 0) {
-                const testUsers = [
-                    {id: '1', username: 'Алексей', password: '123', registered: new Date().toISOString()},
-                    {id: '2', username: 'Мария', password: '123', registered: new Date().toISOString()},
-                    {id: '3', username: 'Иван', password: '123', registered: new Date().toISOString()}
-                ];
-                
-                users = testUsers;
-                localStorage.setItem('chatUsers', JSON.stringify(users));
-                
-                // Инициализируем друзей для тестовых пользователей
-                friends = {
-                    '1': ['2', '3'],
-                    '2': ['1'],
-                    '3': ['1']
-                };
-                localStorage.setItem('chatFriends', JSON.stringify(friends));
-                
-                // Инициализируем тестовые сообщения
-                const testMessages = [
-                    {id: '1', senderId: '1', receiverId: '2', text: 'Привет, Мария! Как дела?', timestamp: new Date(Date.now() - 3600000).toISOString()},
-                    {id: '2', senderId: '2', receiverId: '1', text: 'Привет, Алексей! Все отлично, спасибо!', timestamp: new Date(Date.now() - 3500000).toISOString()},
-                    {id: '3', senderId: '1', receiverId: '2', text: 'Рад это слышать! Хочешь пообщаться?', timestamp: new Date(Date.now() - 3400000).toISOString()},
-                    {id: '4', senderId: '3', receiverId: '1', text: 'Привет, Алексей! Как насчет встречи в эти выходные?', timestamp: new Date(Date.now() - 3000000).toISOString()},
-                    {id: '5', senderId: '1', receiverId: '3', text: 'Привет, Иван! Да, отличная идея!', timestamp: new Date(Date.now() - 2900000).toISOString()}
-                ];
-                
-                messages = {
-                    '1_2': testMessages.filter(m => 
-                        (m.senderId === '1' && m.receiverId === '2') || 
-                        (m.senderId === '2' && m.receiverId === '1')
-                    ),
-                    '1_3': testMessages.filter(m => 
-                        (m.senderId === '1' && m.receiverId === '3') || 
-                        (m.senderId === '3' && m.receiverId === '1')
-                    )
-                };
-                
-                localStorage.setItem('chatMessages', JSON.stringify(messages));
-            }
-            
-            // Показываем подсказку для входа
-            if (!currentUser) {
-                hideChatSection();
-            }
-        });
     </script>
 </body>
 </html>
